@@ -8,7 +8,7 @@ from database import Base
 from database import metadata
 
 class User(SQLAlchemyBaseUserTable[int], Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
