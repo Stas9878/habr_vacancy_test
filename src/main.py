@@ -18,6 +18,7 @@ app.include_router(
     tags=["Auth"],
 )
 
+
 if __name__ == '__main__':
     uvicorn.run(
         app,
