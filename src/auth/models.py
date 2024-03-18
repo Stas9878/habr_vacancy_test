@@ -4,7 +4,7 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy import (TIMESTAMP, Boolean, 
                         Column, Integer, String)
 
-from src.database import Base
+from database import Base
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = 'user'

@@ -3,7 +3,7 @@ from sqlalchemy import (ForeignKey, Column,
                         Integer, String, orm)
 
 from database import Base
-from src.auth.models import User
+from auth.models import User
 
 class Comic(Base):
     __tablename__ = 'comic'

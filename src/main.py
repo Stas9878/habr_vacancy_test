@@ -2,6 +2,7 @@ from fastapi import FastAPI
 import uvicorn
 from auth.base_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
+from comics.router import router as comics_router
 
 app = FastAPI()
 
@@ -18,6 +19,7 @@ app.include_router(
     tags=["Auth"],
 )
 
+app.include_router(comics_router, prefix='/api')
 
 if __name__ == '__main__':
     uvicorn.run(
