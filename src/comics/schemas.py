@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class RatingRead(BaseModel):
     id: int
-    comic_id: int
+    comics_id: int
     user_id: int
     value: int
 
@@ -12,7 +12,11 @@ class RatingRead(BaseModel):
 
 
 class RatingCreate(BaseModel):
-    id: int
-    comic_id: int
+    comics_id: int
     user_id: int
     value: int
+
+class ResponseCreateRating(BaseModel):
+    status: str
+    detail: str
+    data: RatingCreate = None
