@@ -1,5 +1,6 @@
 from sqlalchemy import (ForeignKey, Column, 
-                        Integer, String, Float, orm)
+                        Integer, String, Float)
+from sqlalchemy.orm import validates
 
 from database import Base
 from auth.models import User
@@ -23,8 +24,9 @@ class Rating(Base):
     user_id = Column(Integer, ForeignKey(User.id))
     value = Column(Integer, nullable=False)
 
-    @orm.validates('value')
-    def validate_value(cls, value):
+    @validates('value')
+    def validate_value(self, value):
+        print('errrrrrrrr')
         if not 0 < value < 6:
             raise ValueError(f'Invalid rating value: {value}\nRating must be from 1 to 5 ')
         return value

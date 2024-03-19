@@ -19,4 +19,4 @@ class RatingCreate(BaseModel):
 class ResponseCreateRating(BaseModel):
     status: str
     detail: str
-    data: RatingCreate = None
+    data: RatingCreate | None = None
