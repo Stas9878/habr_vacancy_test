@@ -5,7 +5,6 @@ from comics.schemas import RatingCreate
 
 
 async def update_comics_rating(data: RatingCreate, session: AsyncSession, old_value: int, plus_total:bool = False):
-    print(old_value, data.value, plus_total)
     query = await session.execute(
         update(Comics)
             .where(Comics.id == data.comics_id)

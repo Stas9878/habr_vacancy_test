@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select, update, insert
 from fastapi_users_db_sqlalchemy import AsyncSession
 from database import get_async_session
-from comics.models import Rating
-from comics.schemas import RatingRead, RatingCreate, ResponseCreateRating
+from comics.models import Rating, Comics
+from comics.schemas import ComicsRead, RatingCreate, ResponseCreateRating
 from comics.utils import update_comics_rating, validate_value
 
 
@@ -63,15 +63,18 @@ async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(ge
             'data': None
         }
 
-# @router.get('/ratings')
-# async def get_rating(new_value: RatingCreate, session: AsyncSession = Depends(get_async_session)):
-#     query = select(Rating).where(Rating.user_id == new_value.user_id, Rating.comic_id == new_value.comic_id)
-#     result = await session.execute(query)
-#     arr = result.mappings().all()
+@router.get('/comics/{comic_id}/rating', response_model=ComicsRead, )
+async def get_rating(comic_id: int, session: AsyncSession = Depends(get_async_session)) -> ComicsRead:
+    query = select(Comics).where(Comics.id == comic_id)
+    
+    result = await session.execute(query)
 
+    comics = result.one_or_none()
 
-#     return {
-#         'status': 'success',
-#         'data': result.mappings().all(),
-#         'details': None
-#     }
+    if comics:
+        return {
+            'comics_id': comics[0].id,
+            'rating': comics[0].rating
+        }
+    
+    raise HTTPException(status_code=404, detail='Комикса с таким id не существует.')
