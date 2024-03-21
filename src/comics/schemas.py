@@ -3,11 +3,13 @@ from pydantic import BaseModel
 
 #RATING
 
+#Схема для Rating.POST
 class RatingCreate(BaseModel):
     comics_id: int
     user_id: int
     value: int
 
+#Схема для ответа в Rating.POST
 class ResponseCreateRating(BaseModel):
     status: str
     detail: str
@@ -15,7 +17,8 @@ class ResponseCreateRating(BaseModel):
 
 
 #COMICS
-
+    
+#Схема для Comics.GET
 class ComicsRead(BaseModel):
     comics_id: int
     title: str
@@ -25,6 +28,7 @@ class ComicsRead(BaseModel):
     class Config:
         from_attributes = True
 
+#Схема для Comics.POST
 class ComicsCreate(BaseModel):
     title: str
     author: str

@@ -4,9 +4,10 @@ from auth.base_config import auth_backend, fastapi_users
 from auth.schemas import UserCreate, UserRead
 from comics.router import router as comics_router
 
+#Приложение
 app = FastAPI()
 
-
+#Подключили роутеры аутентификации
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
     prefix="/auth",
@@ -19,8 +20,11 @@ app.include_router(
     tags=["Auth"],
 )
 
+#Подключили пользовательский роутер
 app.include_router(comics_router, prefix='/api')
 
+
+#Конструкция для запуска без терминала
 if __name__ == '__main__':
     uvicorn.run(
         app,

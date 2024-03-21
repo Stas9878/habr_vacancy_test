@@ -1,7 +1,7 @@
 from typing import Optional
 from fastapi_users import schemas
 
-
+#Схема для получения юзера
 class UserRead(schemas.BaseUser[int]):
     id: int
     email: str
@@ -14,6 +14,7 @@ class UserRead(schemas.BaseUser[int]):
         from_attributes = True
 
 
+#Схема для создания юзера
 class UserCreate(schemas.BaseUserCreate):
     username: str
     email: str

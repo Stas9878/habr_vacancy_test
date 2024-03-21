@@ -8,6 +8,7 @@ from auth.models import User
 from auth.utils import get_user_db
 from config import AUTH_SECRET
 
+
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = AUTH_SECRET
     verification_token_secret = AUTH_SECRET
@@ -32,6 +33,8 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
             if safe
             else user_create.create_update_dict_superuser()
         )
+
+        #Подменяем атрибут password на hash_password
         password = user_dict.pop("password")
         user_dict["hashed_password"] = self.password_helper.hash(password)
 

@@ -5,6 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from auth.models import User
 from database import get_async_session
 
-
+#Получение юзера из БД
 async def get_user_db(session: AsyncSession = Depends(get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)

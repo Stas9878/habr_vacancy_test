@@ -6,6 +6,7 @@ from auth.manager import get_user_manager
 from auth.models import User
 from config import AUTH_SECRET
 
+
 cookie_transport = CookieTransport(cookie_name="bonds", cookie_max_age=3600, cookie_secure=False)
 
 

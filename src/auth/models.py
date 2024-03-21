@@ -6,6 +6,7 @@ from sqlalchemy import (TIMESTAMP, Boolean,
 
 from database import Base
 
+
 class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = 'user'
     __table_args__ = {'extend_existing': True}
