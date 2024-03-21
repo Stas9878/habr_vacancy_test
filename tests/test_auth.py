@@ -1,10 +1,7 @@
 import pytest
-from sqlalchemy import insert, select
+from conftest import client
 
-from src.auth.models import User
-from conftest import client, async_session_maker
-
-def test_register():
+def test_register() -> None:
     response = client.post('/auth/register', json={
         'email': 'test@mail.ru',
         'password': 'string',
