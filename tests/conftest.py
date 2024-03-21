@@ -1,6 +1,9 @@
 import asyncio
 from typing import AsyncGenerator
 
+import sys
+sys.path.append('/Users/mac/Desktop/IT/Python/Test_Work/habrelena_test/src/')
+
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -8,8 +11,8 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
-from src.database import get_async_session, metadata
-from src.config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASS_TEST, DB_PORT_TEST,
+from database import get_async_session, metadata
+from config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASS_TEST, DB_PORT_TEST,
                         DB_USER_TEST)
 from main import app
 
