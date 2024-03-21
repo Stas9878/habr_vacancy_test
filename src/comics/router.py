@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import select, update, insert
 from fastapi_users_db_sqlalchemy import AsyncSession
 from database import get_async_session
@@ -6,6 +6,8 @@ from comics.models import Rating, Comics
 from comics.schemas import (ComicsRead, RatingCreate, 
                             ResponseCreateRating, ComicsCreate)
 from comics.utils import update_comics_rating, validate_value
+from auth.base_config import current_user
+from auth.models import User
 
 
 #Роутер для основного приложения
@@ -14,7 +16,9 @@ router = APIRouter(tags=['Rating and Comics'])
 
 #Контроллер для добавления рейтинга комиксу
 @router.post('/ratings', response_model=ResponseCreateRating)
-async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(get_async_session)) -> ResponseCreateRating:    
+async def add_rating(new_value: RatingCreate, 
+                     user: User = Depends(current_user), 
+                     session: AsyncSession = Depends(get_async_session)) -> ResponseCreateRating:    
     try:
         #Проверяем значение на диапазон от 1 до 5 
         validate_value(new_value.value)
@@ -25,7 +29,7 @@ async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(ge
         #Пытаемся найти оценку этого пользователя на этот комикс
         result = await session.execute(
             select(Rating).filter(
-                Rating.user_id == new_value.user_id, 
+                Rating.user_id == user.id, 
                 Rating.comics_id == new_value.comics_id
                 )
             )
@@ -40,7 +44,7 @@ async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(ge
             await session.execute(
                 update(Rating).where(
                     Rating.comics_id == new_value.comics_id, 
-                    Rating.user_id == new_value.user_id
+                    Rating.user_id == user.id
                     ).values(new_value.model_dump())
                 )
                 

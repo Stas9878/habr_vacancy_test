@@ -6,7 +6,6 @@ from pydantic import BaseModel
 #Схема для Rating.POST
 class RatingCreate(BaseModel):
     comics_id: int
-    user_id: int
     value: int
 
 #Схема для ответа в Rating.POST
