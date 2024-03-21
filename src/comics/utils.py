@@ -1,10 +1,10 @@
 from fastapi_users_db_sqlalchemy import AsyncSession
 from sqlalchemy import update
-from comics.models import Comics, Rating
+from comics.models import Comics
 from comics.schemas import RatingCreate
 
 
-async def update_comics_rating(data: RatingCreate, session: AsyncSession, old_value: int, plus_total:bool = False):
+async def update_comics_rating(data: RatingCreate, session: AsyncSession, old_value: int, plus_total:bool = False) -> None:
     query = await session.execute(
         update(Comics)
             .where(Comics.id == data.comics_id)
@@ -24,6 +24,6 @@ async def update_comics_rating(data: RatingCreate, session: AsyncSession, old_va
         )   
     
 
-def validate_value(value):
+def validate_value(value) -> None:
     if not (1 <= value <= 5):
         raise ValueError

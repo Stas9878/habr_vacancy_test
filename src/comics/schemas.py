@@ -1,13 +1,7 @@
 from pydantic import BaseModel
 
 
-class ComicsRead(BaseModel):
-    comics_id: int
-    rating: int
-
-    class Config:
-        from_attributes = True
-
+#RATING
 
 class RatingCreate(BaseModel):
     comics_id: int
@@ -18,3 +12,19 @@ class ResponseCreateRating(BaseModel):
     status: str
     detail: str
     data: RatingCreate | None = None
+
+
+#COMICS
+
+class ComicsRead(BaseModel):
+    comics_id: int
+    title: str
+    author: str
+    rating: int
+
+    class Config:
+        from_attributes = True
+
+class ComicsCreate(BaseModel):
+    title: str
+    author: str

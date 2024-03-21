@@ -3,11 +3,12 @@ from sqlalchemy import select, update, insert
 from fastapi_users_db_sqlalchemy import AsyncSession
 from database import get_async_session
 from comics.models import Rating, Comics
-from comics.schemas import ComicsRead, RatingCreate, ResponseCreateRating
+from comics.schemas import (ComicsRead, RatingCreate, 
+                            ResponseCreateRating, ComicsCreate)
 from comics.utils import update_comics_rating, validate_value
 
 
-router = APIRouter()
+router = APIRouter(tags=['Rating and Comics'])
 
 @router.post('/ratings', response_model=ResponseCreateRating)
 async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(get_async_session)) -> ResponseCreateRating:    
@@ -63,7 +64,7 @@ async def add_rating(new_value: RatingCreate, session: AsyncSession = Depends(ge
             'data': None
         }
 
-@router.get('/comics/{comic_id}/rating', response_model=ComicsRead, )
+@router.get('/comics/{comic_id}/rating', response_model=ComicsRead)
 async def get_rating(comic_id: int, session: AsyncSession = Depends(get_async_session)) -> ComicsRead:
     query = select(Comics).where(Comics.id == comic_id)
     
@@ -74,7 +75,19 @@ async def get_rating(comic_id: int, session: AsyncSession = Depends(get_async_se
     if comics:
         return {
             'comics_id': comics[0].id,
+            'title': comics[0].title,
+            'author': comics[0].author,
             'rating': comics[0].rating
         }
     
     raise HTTPException(status_code=404, detail='Комикса с таким id не существует.')
+
+@router.post('/add_comics')
+async def add_comics(comics: ComicsCreate, session: AsyncSession = Depends(get_async_session)) -> ComicsCreate:
+    new_comics = await session.execute(
+        insert(Comics).values(comics.model_dump())
+    )
+
+    await session.commit()
+
+    return comics
