@@ -1,7 +1,6 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 from alembic import context
 
@@ -11,7 +10,7 @@ import sys
 sys.path.append(os.path.join(sys.path[0], 'src'))
 
 from src.config import DB_USER, DB_PASS, DB_HOST, DB_PORT, DB_NAME
-from src.database import Base, metadata
+from src.database import metadata, Base
 from src.auth.models import *
 from src.comics.models import *
 

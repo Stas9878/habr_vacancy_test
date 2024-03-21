@@ -1,9 +1,9 @@
+import pytest
 from sqlalchemy import insert, select
 
-from conftest import client
+from src.auth.models import User
+from conftest import client, async_session_maker
 
-
-# pytest tests -p no:warnings -v
 def test_register():
     response = client.post('/auth/register', json={
         'email': 'test@mail.ru',
@@ -13,5 +13,4 @@ def test_register():
         'is_verified': False,
         'username': 'testname',
         })
-    
     assert response.status_code == 201

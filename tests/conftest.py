@@ -1,9 +1,6 @@
 import asyncio
 from typing import AsyncGenerator
 
-import sys
-sys.path.append('/Users/mac/Desktop/IT/Python/Test_Work/habrelena_test/src/')
-
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -11,10 +8,11 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
-from database import get_async_session, metadata
+from database import get_async_session, Base
 from config import (DB_HOST_TEST, DB_NAME_TEST, DB_PASS_TEST, DB_PORT_TEST,
                         DB_USER_TEST)
 from main import app
+from src import metadata
 
 # DATABASE
 DATABASE_URL_TEST = f'postgresql+asyncpg://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}'
@@ -32,14 +30,15 @@ app.dependency_overrides[get_async_session] = override_get_async_session
 @pytest.fixture(autouse=True, scope='session')
 async def prepare_database():
     async with engine_test.begin() as conn:
-        await conn.run_sync(metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
     yield
     async with engine_test.begin() as conn:
-        await conn.run_sync(metadata.drop_all)
+        await conn.run_sync(Base.metadata.drop_all)
 
 # SETUP
 @pytest.fixture(scope='session')
 def event_loop(request):
+    '''Create an instance of the default event loop for each test case.'''
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
