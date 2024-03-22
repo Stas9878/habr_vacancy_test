@@ -1,5 +1,6 @@
 import pytest
 from conftest import client
+from httpx import AsyncClient
 
 #Тест регистрации юзера
 def test_register() -> None:
@@ -15,3 +16,23 @@ def test_register() -> None:
             })
         
         assert response.status_code == 201
+
+
+# async def test_login(ac: AsyncClient):
+#     response = await ac.post("/auth/login", data={
+#                 'username': f'test1@mail.ru',
+#                 'password': 'string',
+#                 })
+
+
+
+#Тест аутентификации юзеров
+async def test_login(ac: AsyncClient) -> None:
+    #Аутентифицируем 2-х пользователя
+    for i in range(1, 3):
+        response = await ac.post('/auth/login', data={
+            'username': f'test{i}@mail.ru',
+            'password': 'string',
+            })
+
+        assert response.status_code == 204

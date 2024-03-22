@@ -1,12 +1,11 @@
 from httpx import AsyncClient
 
 #Тест добавления рейтинга комиксу
-async def test_add_rating(ac: AsyncClient ) -> None:
+async def test_add_rating(ac: AsyncClient) -> None:
     #Два пользователя оставили оценку одному комиксу
     for i in range(1, 3):
         response = await ac.post('/api/ratings/', json={
             'comics_id': 1,
-            'user_id': i,
             'value': i * 2 #user1.rating = 2, user2.rating=4 (4 + 2) = 6
         })
 
